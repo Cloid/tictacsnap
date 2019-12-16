@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html>
+     
+  <body style="background-image:url('https://cdn.glitch.com/ba9bda52-cc6d-4056-8ff1-2a54207dce82%2Fsnapchat.png?1555194808608');">
+    <b>PLAYER 1's WINS:</b> <p id="player1"> 0 </p>
+    <b>PLAYER 2's WINS:</b> <p id="player2"> 0 </p>
+  </body>
+  
+    <head>
+      <div class="b-g2"></div>
+        <link rel="stylesheet" href="maingame.css">
+          
+        <title>TIC-TAC-SNAP</title>
+          
+        <meta charset="windows-1252">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+        <style>
+ 
+            *{box-sizing: border-box}
+            
+            .container{
+             width: 300px;
+             overflow: hidden;
+             margin: 50px auto 0 auto;
+            }
+          
+          
+          /*Top Box*/
+            .container span{width: 100%;
+              display: block;
+              text-align: center;
+              font-family: sans-serif;
+              color: #fff;
+              border: 2px solid #000;
+              font-size: 25px;
+              background: #9B55A0;
+            }
+            
+            .container .box{
+              float: left;
+              width: 100px;
+              height:100px;
+              border: 2px solid #000;
+              transition: all .25s ease-in-out;
+              font-family: sans-serif; 
+              font-size: 50px;
+              text-align: center;
+              line-height: 100px; 
+              cursor: pointer;
+            }
+          
+            /*Hover Color */
+            .container .box:hover{background: #fff;
+              color: #fff;}
+            .container .box:active{background: #fff;
+              color: #fff;}
+              
+            /*PLAY AGAIN BUTTON*/
+            button{background: #e92754; 
+                   color: #fff;
+                   font-weight: bold;
+                   border: 2px solid black;
+                    cursor: pointer; 
+                    width: 300px;
+                    height: 80px; 
+                    font-size: 22px;
+                    display: block;
+                    margin: 10px auto}
+            
+            
+             .win{background: #3CB2E2; color: #fff}
+          
+        </style>
+      
+    </head>
+  
+
+    <body>
+        <div class="container" id="main">
+            <span id="turn">TIC-TAC-SNAP</span>
+            <!-- show X or O on div click -->
+            <div class="box" id="box1"></div>
+            <div class="box" id="box2"></div>
+            <div class="box" id="box3"></div>
+            <div class="box" id="box4"></div>
+            <div class="box" id="box5"></div>
+            <div class="box" id="box6"></div>
+            <div class="box" id="box7"></div>
+            <div class="box" id="box8"></div>
+            <div class="box" id="box9"></div>
+        </div>
+        <!-- Play Again And Reset All Info -->
+        <button onclick="replay()">Play Again</button>
+      
+        
+        <script>
+                       
+          
+            var gameOver = false;
+            var turn = document.getElementById("turn"),
+             // boxes => all boxes
+            // X_or_O => to set X or O into the box
+            boxes = document.querySelectorAll("#main div"), X_or_O = 0;
+            var p1_or_p2 = 1;
+            
+            function selectWinnerBoxes(b1,b2,b3){
+                if(p1_or_p2 == 2){
+                  rps();
+                }
+                else{
+                 xps(); 
+                }
+                b1.classList.add("win");
+                b2.classList.add("win");
+                b3.classList.add("win");
+                turn.innerHTML = b1.innerHTML + " Won!";
+                turn.style.fontSize = "30px";
+                gameOver = true;                
+            }
+          
+            function rps() {
+                if(gameOver == false){
+                    var player2 = document.getElementById('player2');
+                    var number = player2.innerHTML;
+                    number++;
+                    player2.innerHTML = number;
+                }
+            }
+          
+            function xps() {
+                if(gameOver == false){
+                      var player1 = document.getElementById('player1');
+                      var number = player1.innerHTML;
+                      number++;
+                      player1.innerHTML = number;
+                }
+            }
+            
+            function getWinner(){
+                
+                var box1 = document.getElementById("box1"),
+                    box2 = document.getElementById("box2"),
+                    box3 = document.getElementById("box3"),
+                    box4 = document.getElementById("box4"),
+                    box5 = document.getElementById("box5"),
+                    box6 = document.getElementById("box6"),
+                    box7 = document.getElementById("box7"),
+                    box8 = document.getElementById("box8"),
+                    box9 = document.getElementById("box9");
+            
+            // get all posibilites
+              if(box1.innerHTML !== "" && box1.innerHTML === box2.innerHTML && box1.innerHTML === box3.innerHTML)
+                 selectWinnerBoxes(box1,box2,box3);
+              if(box4.innerHTML !== "" && box4.innerHTML === box5.innerHTML && box4.innerHTML === box6.innerHTML)
+                 selectWinnerBoxes(box4,box5,box6);
+              if(box7.innerHTML !== "" && box7.innerHTML === box8.innerHTML && box7.innerHTML === box9.innerHTML)
+                 selectWinnerBoxes(box7,box8,box9);
+              if(box1.innerHTML !== "" && box1.innerHTML === box4.innerHTML && box1.innerHTML === box7.innerHTML)
+                 selectWinnerBoxes(box1,box4,box7);
+              if(box2.innerHTML !== "" && box2.innerHTML === box5.innerHTML && box2.innerHTML === box8.innerHTML)
+                 selectWinnerBoxes(box2,box5,box8);
+              if(box3.innerHTML !== "" && box3.innerHTML === box6.innerHTML && box3.innerHTML === box9.innerHTML)
+                 selectWinnerBoxes(box3,box6,box9);
+              if(box1.innerHTML !== "" && box1.innerHTML === box5.innerHTML && box1.innerHTML === box9.innerHTML)
+                 selectWinnerBoxes(box1,box5,box9);
+              if(box3.innerHTML !== "" && box3.innerHTML === box5.innerHTML && box3.innerHTML === box7.innerHTML)
+                 selectWinnerBoxes(box3,box5,box7);
+            }
+            
+            
+            // set event onclick
+            for(var i = 0; i < boxes.length; i++){
+                boxes[i].onclick = function(){
+                    // not allow to change the value of the box
+                  
+                    if(this.innerHTML !== "<img src=\"https://cdn.glitch.com/ba9bda52-cc6d-4056-8ff1-2a54207dce82%2FbitmojiFinal1.png?1555259681671/350x350\" width=\"100px\" height=\"100px\">" 
+                       && this.innerHTML !== "<img src=\"https://cdn.glitch.com/ba9bda52-cc6d-4056-8ff1-2a54207dce82%2FbitmojiFinal2.png?1555259675778/350x350\" width=\"100px\" height=\"100px\">"){
+                        if(X_or_O%2 === 0){
+                            p1_or_p2 = 1;
+                           console.log(X_or_O);
+                           this.innerHTML = "<img src=\"https://cdn.glitch.com/ba9bda52-cc6d-4056-8ff1-2a54207dce82%2FbitmojiFinal1.png?1555259681671/350x350\" width=\"100px\" height=\"100px\">";;
+                           turn.innerHTML = "<img src=\"https://cdn.glitch.com/ba9bda52-cc6d-4056-8ff1-2a54207dce82%2FbitmojiFinal2.png?1555259675778/350x350\" width=\"50px\" height=\"50px\">" +" Turn Now"; 
+                           getWinner();
+                           X_or_O += 1;   
+                        }
+                          else{
+                            p1_or_p2 = 2;
+                           console.log(X_or_O);
+                           this.innerHTML = "<img src=\"https://cdn.glitch.com/ba9bda52-cc6d-4056-8ff1-2a54207dce82%2FbitmojiFinal2.png?1555259675778/350x350\" width=\"100px\" height=\"100px\">";;
+                           turn.innerHTML = "<img src=\"https://cdn.glitch.com/ba9bda52-cc6d-4056-8ff1-2a54207dce82%2FbitmojiFinal1.png?1555259681671/350x350\" width=\"50px\" height=\"50px\">"+" Turn Now";
+                           getWinner();
+                            
+                           X_or_O += 1;  
+
+                        }
+                    }
+                    
+                }
+            }
+            
+            function replay(){
+                
+                for(var i = 0; i < boxes.length; i++){
+                    boxes[i].classList.remove("win");
+                    boxes[i].innerHTML = "";
+                    
+                  
+                    turn.innerHTML = "TIC-TAC-SNAP";
+                    turn.style.fontSize = "25px";
+                    
+                }  
+              gameOver = false;
+            }
+          
+          function show_image(src, width, height, position, alt) {
+          var img = document.createElement("img");
+          img.src = src;
+          img.width = width;
+          img.height = height;
+          img.position = position
+          img.alt = alt;
+
+          // This next line will just add it to the <body> tag
+          document.body.appendChild(img);
+      }
+            
+        </script>
+        
+    </body>
+</html>
+
